@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibePhim - Phim Mới | Xem Phim Vietsub Online</title>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://image.tmdb.org">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="topbar">
+            <div class="container header-inner">
+                <a class="brand" href="#" aria-label="VibePhim">
+                    <span class="brand-mark">V</span>
+                    <span class="brand-text">VibePhim</span>
+                </a>
+
+                <nav class="main-nav" aria-label="Danh mục chính">
+                    <a href="#" class="nav-link active" data-filter="all">VibePhim</a>
+                    <a href="#" class="nav-link" data-filter="movie">Phim Lẻ</a>
+                    <a href="#" class="nav-link" data-filter="series">Phim Bộ</a>
+                    <div class="nav-dropdown">
+                        <button class="nav-trigger" type="button">Thể Loại</button>
+                        <div class="mega-menu" id="genreMenu"></div>
+                    </div>
+                    <div class="nav-dropdown">
+                        <button class="nav-trigger" type="button">Quốc Gia</button>
+                        <div class="mega-menu compact" id="countryMenu"></div>
+                    </div>
+                    <div class="nav-dropdown">
+                        <button class="nav-trigger" type="button">Năm Phát Hành</button>
+                        <div class="mega-menu years" id="yearMenu"></div>
+                    </div>
+                    <a href="#" class="nav-link" data-filter="cinema">Phim Chiếu Rạp</a>
+                    <a href="#" class="nav-link" data-filter="dubbed">Phim Thuyết Minh</a>
+                </nav>
+
+                <form class="search" id="searchForm">
+                    <input id="searchInput" type="search" placeholder="Tìm kiếm phim..." autocomplete="off">
+                    <button type="submit" aria-label="Tìm kiếm">⌕</button>
+                </form>
+
+                <div class="auth-area" id="authArea">
+                    <button class="login-open-btn" id="openLogin" type="button">Đăng nhập</button>
+                    <div class="user-menu" id="userMenu" hidden>
+                        <button class="user-chip" id="userChip" type="button"></button>
+                        <button class="logout-btn" id="logoutBtn" type="button">Đăng xuất</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="container hero-section" aria-labelledby="recommendedTitle">
+            <div class="section-heading">
+                <h1 id="recommendedTitle">VibePhim đề cử</h1>
+                <div class="slider-actions">
+                    <button class="icon-btn" id="prevRecommend" type="button" aria-label="Lùi">‹</button>
+                    <button class="icon-btn" id="nextRecommend" type="button" aria-label="Tiến">›</button>
+                </div>
+            </div>
+            <div class="recommend-strip" id="recommendStrip"></div>
+        </section>
+
+        <div class="container layout">
+            <div class="content">
+                <section class="movie-section" aria-labelledby="latestTitle">
+                    <div class="section-heading">
+                        <h2 id="latestTitle">Phim mới cập nhật</h2>
+                        <div class="tabs" id="quickTabs">
+                            <button class="tab active" type="button" data-filter="all">Mới cập nhật</button>
+                            <button class="tab" type="button" data-filter="action">Hành Động</button>
+                            <button class="tab" type="button" data-filter="animation">Hoạt Hình</button>
+                            <button class="tab" type="button" data-filter="horror">Kinh Dị</button>
+                            <button class="tab" type="button" data-filter="comedy">Hài Hước</button>
+                        </div>
+                    </div>
+                    <div class="result-line" id="resultLine">Đang tải danh sách phim...</div>
+                    <div class="movie-grid" id="movieGrid"></div>
+                    <div class="empty-state" id="emptyState" hidden>Không tìm thấy phim phù hợp.</div>
+                </section>
+
+                <section class="movie-section">
+                    <div class="section-heading">
+                        <h2>Phim chiếu rạp</h2>
+                        <a href="#" class="see-all" data-filter="cinema">Xem tất cả</a>
+                    </div>
+                    <div class="movie-grid small" id="cinemaGrid"></div>
+                </section>
+
+                <section class="movie-section">
+                    <div class="section-heading">
+                        <h2>Phim bộ mới</h2>
+                        <a href="#" class="see-all" data-filter="series">Xem tất cả</a>
+                    </div>
+                    <div class="movie-grid small" id="seriesGrid"></div>
+                </section>
+            </div>
+
+            <aside class="sidebar" aria-label="Bảng xếp hạng">
+                <section class="side-block">
+                    <h2>Phim Hot Trong Tuần</h2>
+                    <ol class="rank-list" id="hotList"></ol>
+                </section>
+                <section class="side-block">
+                    <h2>Đánh giá cao</h2>
+                    <div class="rated-list" id="ratedList"></div>
+                </section>
+            </aside>
+        </div>
+    </main>
+
+    <div class="modal" id="movieModal" aria-hidden="true">
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button class="modal-close" id="closeModal" type="button" aria-label="Đóng">×</button>
+            <div class="modal-media">
+                <img id="modalBackdrop" src="" alt="">
+            </div>
+            <div class="modal-content">
+                <img class="modal-poster" id="modalPoster" src="" alt="">
+                <div class="modal-info">
+                    <p class="eyebrow" id="modalOriginal"></p>
+                    <h2 id="modalTitle"></h2>
+                    <div class="meta-row" id="modalMeta"></div>
+                    <p id="modalDescription"></p>
+                    <div class="modal-actions">
+                        <button class="watch-btn" id="watchBtn" type="button">Xem phim</button>
+                        <button class="ghost-btn" type="button" id="trailerBtn">Trailer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal auth-modal" id="authModal" aria-hidden="true">
+        <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+            <button class="modal-close" id="closeAuth" type="button" aria-label="Đóng">×</button>
+            <div class="auth-panel">
+                <p class="eyebrow">Tài khoản</p>
+                <h2 id="authTitle">Đăng nhập VibePhim</h2>
+                <p class="auth-note">Lưu phiên đăng nhập trên trình duyệt này để mô phỏng tài khoản người dùng.</p>
+                <form class="auth-form" id="authForm">
+                    <label>
+                        Tên đăng nhập
+                        <input id="authUsername" type="text" autocomplete="username" minlength="3" required>
+                    </label>
+                    <label>
+                        Mật khẩu
+                        <input id="authPassword" type="password" autocomplete="current-password" minlength="4" required>
+                    </label>
+                    <p class="auth-error" id="authError" hidden></p>
+                    <button class="watch-btn" type="submit" id="authSubmit">Đăng nhập</button>
+                </form>
+                <button class="auth-switch" id="authSwitch" type="button">Chưa có tài khoản? Đăng ký</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div>
+                <a class="brand footer-brand" href="#">
+                    <span class="brand-mark">V</span>
+                    <span class="brand-text">VibePhim</span>
+                </a>
+                <p>Xem phim online miễn phí chất lượng cao với phụ đề Tiếng Việt, Thuyết Minh và Lồng Tiếng.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">Điều khoản chung</a>
+                <a href="#">Chính sách riêng tư</a>
+                <a href="#">FAQ</a>
+                <a href="#">Liên hệ</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
